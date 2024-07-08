@@ -14,14 +14,15 @@ spec:
         app: backend
     spec:
       containers:
-      - name: django-container
+      - name: backend
         image: gkiavash/k8s_backend
         ports:
         - containerPort: 8000
         command:
-          - "python manage.py collectstatic --no-input"
-          - "python manage.py migrate"
-          - "python manage.py runserver 0.0.0.0:8000"
+          - "ls"
+#          - "python manage.py collectstatic --no-input"
+#          - "python manage.py migrate"
+#          - "python manage.py runserver 0.0.0.0:8000"
         envFrom:
           - configMapRef:
               name: myconfig
