@@ -15,5 +15,5 @@ RUN apt-get update \
     && pip install --no-cache-dir -r requirements.txt  \
     && python manage.py collectstatic --noinput
 
-#EXPOSE 8000
-#CMD ["gunicorn", "--bind", "0.0.0.0:8000", "k8s_backend.wsgi:application"]
+EXPOSE 8000
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "k8s_backend.wsgi:application"]
