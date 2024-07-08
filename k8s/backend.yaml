@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django-app
+  namespace: dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: django-app
+  template:
+    metadata:
+      labels:
+        app: django-app
+    spec:
+      containers:
+      - name: django-container
+        image: gkiavash/k8s_backend
+        ports:
+        - containerPort: 8000
+        envFrom:
+          - configMapRef:
+              name: myapp-env-vars
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: django-service
+spec:
+  selector:
+    app: django-app
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
