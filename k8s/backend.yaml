@@ -1,34 +1,38 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: django-app
+  name: backend
   namespace: dev
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: django-app
+      app: backend
   template:
     metadata:
       labels:
-        app: django-app
+        app: backend
     spec:
       containers:
       - name: django-container
         image: gkiavash/k8s_backend
         ports:
         - containerPort: 8000
+        command:
+          - "python manage.py collectstatic --no-input"
+          - "python manage.py migrate"
+          - "python manage.py runserver 0.0.0.0:8000"
         envFrom:
           - configMapRef:
-              name: myapp-env-vars
+              name: myconfig
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: django-service
+  name: backend-service
 spec:
   selector:
-    app: django-app
+    app: backend
   ports:
     - protocol: TCP
       port: 8000
